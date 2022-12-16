@@ -4,17 +4,18 @@
     "description": "A web app where users can create and vote on polls",
     "main": "app.js",
     "scripts": {
-	"test": "node test.js"
+        "test": "node test.js"
     },
     "keywords": [
-	"spa",
-	"express",
-	"postgresql"
+        "spa",
+        "express",
+        "postgresql"
     ],
     "author": "Hassan El anabi (al-annabi.tech)",
     "license": "MIT",
     "dependencies": {
-	"express": "^4.18.2",
-	"spa-utils": "file:../spa_utils"
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "spa-utils": "file:../spa_utils"
     }
 }
