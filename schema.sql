@@ -1,0 +1,32 @@
+BEGIN;
+
+CREATE TABLE Users (
+       id    	   INT PRIMARY KEY,
+       username	   TEXT UNIQUE NOT NULL,
+       email	   TEXT UNIQUE NOT NULL,
+       pwd_hash	   TEXT NOT NULL
+);
+
+CREATE TABLE Polls (
+       id		INT PRIMARY KEY,
+       creator	   	INT REFERENCES Users ON DELETE SET NULL,
+       title	   	TEXT NOT NULL,
+       creation_time	DATE NOT NULL
+);
+
+CREATE TABLE Choices (
+       description TEXT,
+       poll 	   INT REFERENCES Polls ON DELETE CASCADE,
+       PRIMARY KEY (description, poll)
+);
+
+CREATE TABLE Votes (
+       voter  	   INT REFERENCES Users ON DELETE CASCADE,
+       poll  	   INT REFERENCES Polls ON DELETE CASCADE,
+       choice	   TEXT,
+       PRIMARY KEY (voter, poll, choice),
+       FOREIGN KEY (poll, choice)
+       REFERENCES Choices (poll, description) ON DELETE CASCADE
+);
+
+COMMIT;
