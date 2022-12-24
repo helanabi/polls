@@ -10,6 +10,30 @@ const pg = new PgClient();
 
 app.use(express.static(makePath("public")));
 
+app.get("/api/polls", async (req, res, next) => {
+    try {
+	const {rows: polls} = await pg.query("SELECT * FROM Polls")
+	const {rows: votes} = await pg.query("SELECT * FROM Votes_per_poll");
+	
+	const pollsWithVotes = polls.map(poll => {
+	    const choices = votes
+		  .filter(count => count.poll === poll.id)
+		  .map(count => {
+		      return {
+			  description: count.choice,
+			  votes: count.votes
+		      };
+		  });
+	    
+	    return { ...poll, choices };
+	});
+
+	return res.json(pollsWithVotes);
+    } catch (err) {
+	next(err);
+    }
+});
+
 function shutdown() {
     pg.end();
     process.exit();
