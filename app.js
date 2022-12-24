@@ -37,6 +37,10 @@ app.get("/api/polls", async (req, res, next) => {
     return res.json(pollsWithVotes);
 });
 
+app.get("/*", (req, res) => {
+    res.sendFile(makePath("public/index.html"));
+});
+
 async function main() {
     await db.init();
 
