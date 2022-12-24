@@ -4,11 +4,15 @@ dotenv.config({ path: makePath(".env") });
 
 const express = require("express");
 const db = require("./db.js");
+const users = require("./users.js");
 
 const { PORT } = process.env;
 const app = express();
 
+app.use(express.json());
 app.use(express.static(makePath("public")));
+
+app.post("/api/signup", users.signup);
 
 app.get("/api/polls", async (req, res, next) => {
     let polls;
@@ -39,6 +43,11 @@ app.get("/api/polls", async (req, res, next) => {
 
 app.get("/*", (req, res) => {
     res.sendFile(makePath("public/index.html"));
+});
+
+app.use((err, req, res, next) => {
+    console.error(err.toString());
+    res.status(err.status ?? 500).send({ error: err.message });
 });
 
 async function main() {

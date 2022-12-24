@@ -17,17 +17,24 @@ exports.init = async function() {
 	await client.end();
 	throw new Error("Wrong database schema");
     }
-}
+};
 
 exports.close = function() {
     return client.end();
-}
+};
 
 
 exports.polls = async function() {
     return (await client.query("SELECT * FROM Polls")).rows;
-}
+};
 
 exports.votesPerPoll = async function() {
     return (await client.query("SELECT * FROM Votes_per_poll")).rows;
-}
+};
+
+exports.saveUser = async function(user) {
+    return await client.query(
+	"INSERT INTO Users (username, email, pwd_hash) " +
+	    "VALUES ($1, $2, $3)",
+	[user.username, user.email, user.pwd_hash]);
+};
