@@ -12,9 +12,14 @@ function header() {
 		     cons("li", link("/signup", "Sign up"))));
 }
 
+function notfound() {
+    return cons("h2", "Page Not Found");
+}
+
 const routes = new Map()
       .set(/\/$/, pollList)
-      .set(/\/signup$/, signup);
+      .set(/\/signup$/, signup)
+      .set(/\//, notfound);
 
 document.body.append(
     header(),
