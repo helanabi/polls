@@ -1,5 +1,6 @@
 import cons from "./spa-utils/cons.js";
 import { link } from "./spa-utils/router.js";
+import pollList from "./poll-list.js";
 
 function header() {
     return cons("header",
@@ -9,4 +10,6 @@ function header() {
 		     cons("li", link("/", "Home"))));
 }
 
-document.body.append(header());
+document.body.append(
+    header(),
+    pollList());
