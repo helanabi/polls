@@ -1,17 +1,17 @@
 BEGIN;
 
 CREATE TABLE Users (
-       id    	   INT PRIMARY KEY,
+       id    	   SERIAL PRIMARY KEY,
        username	   TEXT UNIQUE NOT NULL,
        email	   TEXT UNIQUE NOT NULL,
        pwd_hash	   TEXT NOT NULL
 );
 
 CREATE TABLE Polls (
-       id		INT PRIMARY KEY,
+       id		SERIAL PRIMARY KEY,
        creator	   	INT REFERENCES Users ON DELETE SET NULL,
        title	   	TEXT NOT NULL,
-       creation_time	DATE NOT NULL
+       creation_time	TIMESTAMP NOT NULL
 );
 
 CREATE TABLE Choices (
