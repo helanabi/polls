@@ -29,4 +29,9 @@ CREATE TABLE Votes (
        REFERENCES Choices (poll, description) ON DELETE CASCADE
 );
 
+CREATE VIEW Votes_per_poll
+       AS SELECT poll, choice, COUNT(voter) AS votes
+       FROM Votes
+       GROUP BY poll, choice;
+
 COMMIT;
