@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const httpError = require("http-errors");
+const jwt = require("jsonwebtoken");
 const db = require("./db.js");
 
 exports.signup = function(req, res, next) {
@@ -18,5 +19,22 @@ exports.signup = function(req, res, next) {
 	    }
 	    next(err);
 	}
+    });
+};
+
+exports.login = async function(req, res, next) {
+    const user = await db.user(req.body.username);
+
+    if (!user)
+	return next(httpError(406, "username not found"))
+
+    bcrypt.compare(req.body.password, user.pwd_hash, (err, result) => {
+	if (err) return next(err);
+	if (!result) return next(httpError(406, "wrong password"));
+
+	jwt.sign({ id: user.id }, process.env.JWT_KEY, (err, token) => {
+	    if (err) return next(err);
+	    res.json({ token });
+	});
     });
 };

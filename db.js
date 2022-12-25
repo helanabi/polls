@@ -32,9 +32,16 @@ exports.votesPerPoll = async function() {
     return (await client.query("SELECT * FROM Votes_per_poll")).rows;
 };
 
-exports.saveUser = async function(user) {
-    return await client.query(
+exports.saveUser = function(user) {
+    return client.query(
 	"INSERT INTO Users (username, email, pwd_hash) " +
 	    "VALUES ($1, $2, $3)",
 	[user.username, user.email, user.pwd_hash]);
+};
+
+exports.user = async function(username) {
+    const res = await client.query("SELECT * FROM Users WHERE username = $1",
+				   [username]);
+    if (res.rows.length)
+	return res.rows[0];
 };

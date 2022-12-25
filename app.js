@@ -13,6 +13,7 @@ app.use(express.json());
 app.use(express.static(makePath("public")));
 
 app.post("/api/signup", users.signup);
+app.post("/api/login", users.login);
 
 app.get("/api/polls", async (req, res, next) => {
     let polls;
