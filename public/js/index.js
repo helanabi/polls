@@ -1,9 +1,8 @@
 import cons from "./spa-utils/cons.js";
 import { link, router } from "./spa-utils/router.js";
-import pollList from "./poll-list.js";
+import home from "./home.js";
 import login from "./login.js";
 import signup from "./signup.js";
-
 
 function header(userLoggedIn) {
     const links = cons("ul", cons("li", link("/", "Home")));
@@ -32,14 +31,14 @@ function app() {
 	currentHeader.replaceWith(currentHeader = header(Boolean(user)));
     }
 
+    const container = new DocumentFragment();
+    let currentHeader = header(Boolean(shared.user));
+
     const routes = new Map()
-	  .set(/\/$/, pollList)
+	  .set(/\/$/, () => home(shared))
 	  .set(/\/login$/, () => login(setUser))
 	  .set(/\/signup$/, signup)
 	  .set(/\//, notfound);
-
-    const container = new DocumentFragment();
-    let currentHeader = header(Boolean(shared.user));
 
     container.append(
 	currentHeader,

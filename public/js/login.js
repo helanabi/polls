@@ -1,6 +1,6 @@
 import cons from "./spa-utils/cons.js";
 import { navigate } from "./spa-utils/router.js";
-import { logUserIn } from "./api.js";
+import { logUserIn, setToken } from "./api.js";
 
 export default function login(setUser) {
     const notif = cons("div", { hidden: "" });
@@ -13,6 +13,7 @@ export default function login(setUser) {
 					 form.password.value);
 	    form.reset();
 	    localStorage.setItem("user", JSON.stringify(user));
+	    setToken(user.token);
 	    setUser(user);
 	    navigate("/");
 	} catch(err) {
