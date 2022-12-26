@@ -5,13 +5,16 @@ import home from "./home.js";
 import login from "./login.js";
 import signup from "./signup.js";
 
-function header(userLoggedIn) {
+function header(userLoggedIn, setUser) {
     const links = cons("ul", cons("li", link("/", "Home")));
 
     if (!userLoggedIn) {
 	links.append(
 	    cons("li", link("/signup", "Sign up")),
 	    cons("li", link("/login", "Log in")));
+    } else {
+	links.append(
+	    cons("button", { onclick: () => setUser(null) }, "Log out"));
     }
     
     return cons("header",
@@ -28,9 +31,17 @@ function app() {
     const shared = {};
 
     function setUser(user) {
+	if (user)
+	    localStorage.setItem("user", JSON.stringify(user));
+	else
+	    localStorage.removeItem("user");
+	
 	shared.user = user;
 	api.setToken(user?.token);
-	currentHeader.replaceWith(currentHeader = header(Boolean(user)));
+
+	currentHeader.replaceWith(
+	    currentHeader = header(Boolean(user), setUser));
+
 	shared.toggleHomeView();
     }
 

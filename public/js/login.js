@@ -12,7 +12,6 @@ export default function login(setUser) {
 	    const user = await logUserIn(form.username.value,
 					 form.password.value);
 	    form.reset();
-	    localStorage.setItem("user", JSON.stringify(user));
 	    setUser(user);
 	    navigate("/");
 	} catch(err) {
