@@ -1,4 +1,4 @@
-import { savePoll } from "./api.js";
+import * as api from "./api.js";
 import cons from "./spa-utils/cons.js";
 
 function makeList(polls) {
@@ -13,27 +13,26 @@ function makeList(polls) {
 	     cons("span", new Date(poll.creation_time))));
 }
 
-function pollList() {
-    const root = cons("section", "Loading...");
-    
-    fetch("/api/polls")
-	.then(res => {
-	    if (res.ok) return res.json();
-	    throw new Error(`${res.status}: ${res.statusText}`);
-	})
-	.then(polls => {
-	    root.replaceChildren(...makeList(polls));
-	})
-	.catch(err => {
+function pollList(shared) {
+    const root = cons("section");
+
+    async function refresh() {
+	root.prepend("loading...");
+
+	try {
+	    root.replaceChildren(...makeList(await api.polls()));
+	} catch(err) {
 	    console.error(err = err.toString());
 	    root.replaceChildren(cons("div", err));
-	});
+	};
+    }
 
+    shared.refreshList = refresh;
+    refresh();
     return root;
 }
 
-function pollForm() {
-    // TODO: sync list when polls added
+function pollForm(shared) {
     let optionCount = 2;
     const notif = cons("div", { hidden: "" });
 
@@ -52,7 +51,9 @@ function pollForm() {
 	      .slice(1);
 
 	try {
-	    await savePoll(form.title.value, choices);
+	    await api.savePoll(form.title.value, choices);
+	    shared.refreshList();
+	    form.reset();
 	} catch (err) {
 	    console.error(err = err.toString());
 	    notif.removeAttribute("hidden");
@@ -79,11 +80,13 @@ function pollForm() {
 }
 
 export default function home(shared) {
-    const pollFormNode = pollForm();
+    const localShared = {};
+    const pollListNode = pollList(localShared);
+    const pollFormNode = pollForm(localShared);
     
     const root = cons("main", 
 		      shared.user ? pollFormNode : "",
-		      pollList());
+		      pollListNode);
 
     root.addEventListener("_connect", () => {
 	if (shared.user)

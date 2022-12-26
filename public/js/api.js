@@ -15,13 +15,19 @@ export async function logUserIn(username, password) {
 
     const json = await res.json();
 
-    if (!res.ok)
-	throw new Error(json.error);
-
-    return json;
+    if (res.ok) return json;
+    throw new Error(json.error);
 }
 
 // TODO: Move user registration procedure here
+
+export async function polls() {
+    const res = await fetch("/api/polls");
+    const json = await res.json();
+
+    if (res.ok) return json;
+    throw new Error(json.error);
+}
 
 export async function savePoll(title, choices) {
     const res = await fetch("/api/polls", {
