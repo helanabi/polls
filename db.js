@@ -25,7 +25,10 @@ exports.close = function() {
 
 
 exports.polls = async function() {
-    return (await client.query("SELECT * FROM Polls")).rows;
+    return (await client.query(
+	"SELECT Polls.id, username AS creator, title, creation_time " +
+	    "FROM Polls JOIN Users ON Polls.creator = Users.id " +
+	    "ORDER BY creation_time DESC")).rows;
 };
 
 exports.voteCounts = async function() {

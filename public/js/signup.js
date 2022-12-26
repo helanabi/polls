@@ -17,8 +17,9 @@ async function saveUser(form) {
 	})
     });
 
-    if (!res.ok)
-	throw new Error(`${res.status}: ${res.statusText}`);
+    if (!res.ok) {
+	throw new Error((await res.json()).error);
+    }
 }
 
 export default function signup() {
@@ -36,7 +37,7 @@ export default function signup() {
 	    notif.replaceChildren(
 		"Account created successfuly. ",
 		"You can now ", link("/login", " login"),
-		"with your new account");
+		" with your new account");
 	} catch(err) {
 	    console.error(err = err.toString());
 	    notif.removeAttribute("hidden");

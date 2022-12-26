@@ -9,7 +9,7 @@ exports.signup = function(req, res, next) {
 	
 	try {
 	    await db.saveUser({ ...req.body, pwd_hash: hash });
-	    res.end();
+	    res.status(201).end();
 	} catch(err) {
 	    if (err.message.includes("violates unique constraint")) {
 		for (const field of ["username", "email"]) {

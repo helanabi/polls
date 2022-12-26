@@ -9,8 +9,8 @@ function makeList(polls) {
 		 cons("div",
 		      cons("span", choice.description),
 		      cons("span", choice.votes))),
-	     cons("span", "Posted by:", poll.creator),
-	     cons("span", new Date(poll.creation_time))));
+	     cons("span", "By: ", poll.creator),
+	     cons("span", new Date(poll.creation_time).toLocaleString())));
 }
 
 function pollList(shared) {
