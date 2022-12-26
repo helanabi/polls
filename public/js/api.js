@@ -4,6 +4,18 @@ export function setToken(newToken) {
     token = newToken;
 }
 
+export async function authenticate(storedUser) {
+    const res = await fetch("/api/auth", {
+	method: "POST",
+	headers: {
+	    "Content-Type": "application/json"
+	},
+	body: storedUser
+    });
+
+    if (!res.ok) throw new Error((await res.json()).error);
+}
+
 export async function logUserIn(username, password) {
     const res = await fetch("/api/login", {
 	method: "POST",

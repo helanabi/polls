@@ -3,6 +3,13 @@ const httpError = require("http-errors");
 const jwt = require("jsonwebtoken");
 const db = require("./db.js");
 
+exports.auth = function(req, res, next) {
+    jwt.verify(req.body.token, process.env.JWT_KEY, (err, decoded) => {
+	if (err) return next(httpError(406, "Invalid token"));
+	res.end();
+    });
+}
+
 exports.signup = function(req, res, next) {
     bcrypt.hash(req.body.password, 10, async (err, hash) => {
 	if (err) return next(err);

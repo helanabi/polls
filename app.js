@@ -13,6 +13,11 @@ const app = express();
 app.use(express.json());
 app.use(express.static(makePath("public")));
 
+app.use((req, res, next) => {
+    setTimeout(next, 500 + Math.random() * 1000);
+});
+
+app.post("/api/auth", users.auth);
 app.post("/api/signup", users.signup);
 app.post("/api/login", users.login);
 

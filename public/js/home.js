@@ -88,12 +88,13 @@ export default function home(shared) {
 		      shared.user ? pollFormNode : "",
 		      pollListNode);
 
-    root.addEventListener("_connect", () => {
+    function toggleView() {
 	if (shared.user)
 	    root.prepend(pollFormNode);
 	else
 	    pollFormNode.remove();
-    });
+    }
 
+    shared.toggleHomeView = toggleView;
     return root;
 }
