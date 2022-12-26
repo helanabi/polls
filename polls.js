@@ -20,21 +20,21 @@ function authorize(req, next) {
 
 exports.getAll = async function(req, res, next) {
     let polls;
-    let votes;
+    let voteCounts;
 
     try {
 	polls = await db.polls();
-	votes = await db.votesPerPoll();
+	voteCounts = await db.voteCounts();
     } catch (err) {
 	next(err);
     }
-    
+
     const pollsWithVotes = polls.map(poll => {
-	const choices = votes
+	const choices = voteCounts
 	      .filter(count => count.poll === poll.id)
 	      .map(count => {
 		  return {
-		      description: count.choice,
+		      description: count.description,
 		      votes: count.votes
 		  };
 	      });
@@ -56,4 +56,3 @@ exports.post = async function(req, res, next) {
 	next(err);
     }
 };
-    

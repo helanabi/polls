@@ -28,8 +28,8 @@ exports.polls = async function() {
     return (await client.query("SELECT * FROM Polls")).rows;
 };
 
-exports.votesPerPoll = async function() {
-    return (await client.query("SELECT * FROM Votes_per_poll")).rows;
+exports.voteCounts = async function() {
+    return (await client.query("SELECT * FROM Vote_counts")).rows;
 };
 
 exports.savePoll = async function(creator, poll) {
