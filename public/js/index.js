@@ -44,7 +44,7 @@ function app() {
     }
 
     shared.showNotif = (msg, type) => {
-	// TODO
+	alert(msg);
     };
 
     const routes = new Map()
