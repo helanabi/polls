@@ -1,6 +1,6 @@
 import cons from "./spa-utils/cons.js";
 import { navigate } from "./spa-utils/router.js";
-import { logUserIn } from "./api.js";
+import { request } from "./api.js";
 
 export default function login(setUser) {
     const notif = cons("div", { hidden: "" });
@@ -9,8 +9,13 @@ export default function login(setUser) {
 	event.preventDefault();
 	const form = event.target;
 	try {
-	    const user = await logUserIn(form.username.value,
-					 form.password.value);
+	    const user = await request("/api/login", {
+		payload: {
+		    username: form.username.value,
+		    password: form.password.value
+		}
+	    });
+
 	    form.reset();
 	    setUser(user);
 	    navigate("/");

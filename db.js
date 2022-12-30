@@ -23,12 +23,21 @@ exports.close = function() {
     return client.end();
 };
 
+exports.polls = async function(user) {
+    let columns = "Polls.id, username AS creator, title, creation_time";
+    let fromItem = "Polls JOIN Users ON Polls.creator = Users.id";
+    const params = [];
 
-exports.polls = async function() {
+    if (user) {
+	columns += ", choice";
+	fromItem = `(${fromItem}) LEFT JOIN Votes ` +
+	    "ON Polls.id = Votes.poll AND voter = $1";
+	params.push(user.id);
+    }
+    
     return (await client.query(
-	"SELECT Polls.id, username AS creator, title, creation_time " +
-	    "FROM Polls JOIN Users ON Polls.creator = Users.id " +
-	    "ORDER BY creation_time DESC")).rows;
+	`SELECT ${columns} FROM ${fromItem} ORDER BY creation_time DESC`,
+	params)).rows;
 };
 
 exports.voteCounts = async function() {
@@ -51,6 +60,11 @@ exports.savePoll = async function(creator, poll) {
     
     return pollId;
 };
+
+exports.vote = function(user, pollId, choice) {
+    return client.query("INSERT INTO Votes VALUES ($1, $2, $3)",
+			[ user.id, pollId, choice ]);
+}
 
 exports.saveUser = function(user) {
     return client.query(

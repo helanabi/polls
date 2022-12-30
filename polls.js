@@ -4,15 +4,19 @@ const db = require("./db.js");
 
 function authorize(req, next) {
     const token = req.get("Authorization");
-    if (!token) return next(httpError(401));
+    if (!token) {
+	next?.(httpError(401));
+	return Promise.resolve(false);
+    }
 
     return new Promise((resolve, reject) => {
 	jwt.verify(token, process.env.JWT_KEY, (err, user) => {
 	    if (err) {
-		next(httpError(406, "invalid token"));
-		resolve();
+		next?.(httpError(406, "invalid token"));
+		resolve(false);
 	    } else {
-		resolve(user);
+		req.user = user;
+		resolve(true);
 	    }
 	});
     });
@@ -22,8 +26,10 @@ exports.getAll = async function(req, res, next) {
     let polls;
     let voteCounts;
 
+    await authorize(req);
+
     try {
-	polls = await db.polls();
+	polls = await db.polls(req.user);
 	voteCounts = await db.voteCounts();
     } catch (err) {
 	next(err);
@@ -46,11 +52,22 @@ exports.getAll = async function(req, res, next) {
 }
 
 exports.post = async function(req, res, next) {
-    const user = await authorize(req, next);
-    if (!user) return;
+    if (!await authorize(req, next)) return;
 
     try {
-	await db.savePoll(user, req.body);
+	await db.savePoll(req.user, req.body);
+	res.status(201).end();
+    } catch(err) {
+	next(err);
+    }
+};
+
+exports.vote = async function(req, res, next) {
+    if (!await authorize(req, next)) return;
+    const { pollId, choice } = req.body;
+
+    try {
+	await db.vote(req.user, pollId, choice);
 	res.status(201).end();
     } catch(err) {
 	next(err);

@@ -23,6 +23,7 @@ app.post("/api/login", users.login);
 
 app.get("/api/polls", polls.getAll);
 app.post("/api/polls", polls.post);
+app.post("/api/votes", polls.vote);
 
 app.get("/*", (req, res) => {
     res.sendFile(makePath("public/index.html"));

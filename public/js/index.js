@@ -38,12 +38,14 @@ function app() {
 	
 	shared.user = user;
 	api.setToken(user?.token);
-
 	currentHeader.replaceWith(
 	    currentHeader = header(Boolean(user), setUser));
-
 	shared.toggleHomeView();
     }
+
+    shared.showNotif = (msg, type) => {
+	// TODO
+    };
 
     const routes = new Map()
 	  .set(/\/$/, () => home(shared))
@@ -59,8 +61,8 @@ function app() {
     if (storedUser) {
 	notif.removeAttribute("hidden");
 	notif.textContent = "Authenticating user...";
-	
-	api.authenticate(storedUser)
+
+	api.request("/api/auth", { payload: storedUser })
 	    .then(() => {
 		setUser(JSON.parse(storedUser));
 		notif.setAttribute("hidden", "");

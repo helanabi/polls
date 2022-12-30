@@ -1,34 +1,74 @@
 import * as api from "./api.js";
 import cons from "./spa-utils/cons.js";
 
-function makeList(polls) {
-    return polls.map(poll =>
-	cons("div",
-	     cons("span", poll.title),
-	     ...poll.choices.map(choice =>
-		 cons("div",
-		      cons("span", choice.description),
-		      cons("span", choice.votes))),
-	     cons("span", "By: ", poll.creator),
-	     cons("span", new Date(poll.creation_time).toLocaleString())));
+function makePoll(poll, shared) {
+    let choice;
+    const voteBtn = cons("button", { disabled: "" }, "Vote");
+    if (!shared.user || poll.choice) voteBtn.setAttribute("hidden", "");
+
+    voteBtn.onclick = async (event) => {
+	try {
+	    await api.request("/api/votes", {
+		useAuth: true,
+		payload: {
+		    pollId: poll.id,
+		    choice: choice.firstElementChild.textContent
+		}
+	    });
+	    
+	    shared.refreshList();
+	} catch (err) {
+	    console.error(err = err.toString());
+	    shared.showNotif(err, "error");
+	}
+    };
+
+    let handleSelect = function(event) {
+	if (!shared.user || poll.choice) return;
+	choice?.classList.remove("selected-choice");
+	choice = this;
+	choice.classList.add("selected-choice");
+	voteBtn.removeAttribute("disabled");
+    }
+    
+    return cons("div",
+		cons("span", poll.title),
+		...poll.choices.map(choice =>
+		    cons("div",
+			 {
+			     class: "poll-choice",
+			     onclick: handleSelect
+			 },
+			 cons("span", choice.description),
+			 cons("span", choice.votes))),
+		voteBtn,
+		cons("span", "By: ", poll.creator),
+		cons("span",
+		     new Date(poll.creation_time).toLocaleString()));
 }
 
 function pollList(shared) {
     const root = cons("section");
 
-    async function refresh() {
+    shared.refreshList = async () => {
 	root.prepend("loading...");
 
 	try {
-	    root.replaceChildren(...makeList(await api.polls()));
+	    const polls = await api.request("/api/polls", {
+		useAuth: Boolean(shared.user)
+	    });
+	    
+	    shared.togglePollView = [];
+	    root.replaceChildren(...polls.map(poll =>
+		makePoll(poll, shared)));
+	    
 	} catch(err) {
 	    console.error(err = err.toString());
 	    root.replaceChildren(cons("div", err));
 	};
     }
-
-    shared.refreshList = refresh;
-    refresh();
+    
+    shared.refreshList();
     return root;
 }
 
@@ -51,7 +91,14 @@ function pollForm(shared) {
 	      .slice(1);
 
 	try {
-	    await api.savePoll(form.title.value, choices);
+	    await api.request("api/polls", {
+		useAuth: true,
+		payload: {
+		    title: form.title.value,
+		    choices
+		}
+	    });
+	    
 	    shared.refreshList();
 	    form.reset();
 	} catch (err) {
@@ -81,20 +128,21 @@ function pollForm(shared) {
 
 export default function home(shared) {
     const localShared = {};
-    const pollListNode = pollList(localShared);
-    const pollFormNode = pollForm(localShared);
+    const pollListNode = pollList(shared);
+    const pollFormNode = pollForm(shared);
     
     const root = cons("main", 
 		      shared.user ? pollFormNode : "",
 		      pollListNode);
 
-    function toggleView() {
+    shared.toggleHomeView = () => {
+	shared.refreshList();
+	
 	if (shared.user)
 	    root.prepend(pollFormNode);
 	else
 	    pollFormNode.remove();
-    }
-
-    shared.toggleHomeView = toggleView;
+    };
+    
     return root;
 }

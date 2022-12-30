@@ -24,7 +24,7 @@ CREATE TABLE Votes (
        voter  	   INT REFERENCES Users ON DELETE CASCADE,
        poll  	   INT REFERENCES Polls ON DELETE CASCADE,
        choice	   TEXT,
-       PRIMARY KEY (voter, poll, choice),
+       PRIMARY KEY (voter, poll),
        FOREIGN KEY (poll, choice)
        REFERENCES Choices (poll, description) ON DELETE CASCADE
 );

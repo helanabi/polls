@@ -4,53 +4,32 @@ export function setToken(newToken) {
     token = newToken;
 }
 
-export async function authenticate(storedUser) {
-    const res = await fetch("/api/auth", {
-	method: "POST",
-	headers: {
-	    "Content-Type": "application/json"
-	},
-	body: storedUser
-    });
+export async function request(url, { payload, method, useAuth }={}) {
+    const opts = {};
+    opts.method = method ?? (payload ? "POST" : "GET");
 
-    if (!res.ok) throw new Error((await res.json()).error);
-}
+    if (payload) {
+	opts.headers = { "Content-Type": "application/json" };
 
-export async function logUserIn(username, password) {
-    const res = await fetch("/api/login", {
-	method: "POST",
-	headers: {
-	    "Content-Type": "application/json",
-	},
-	body: JSON.stringify({ username, password })
-    });
+	opts.body = typeof payload === "string" ?
+	    payload:
+	    JSON.stringify(payload);
+    }
 
-    const json = await res.json();
+    if (useAuth) {
+	opts.headers = {
+	    ...(opts.headers ?? {}),
+	    Authorization: token
+	};
+    }
+    
+    const res = await fetch(url, opts);
 
-    if (res.ok) return json;
-    throw new Error(json.error);
-}
+    const hasBody = res.headers
+	  .get("Content-Type")?.startsWith("application/json");
 
-// TODO: Move user registration procedure here
+    const json = hasBody && await res.json();
 
-export async function polls() {
-    const res = await fetch("/api/polls");
-    const json = await res.json();
-
-    if (res.ok) return json;
-    throw new Error(json.error);
-}
-
-export async function savePoll(title, choices) {
-    const res = await fetch("/api/polls", {
-	method: "POST",
-	headers: {
-	    "Content-Type": "application/json",
-	    "Authorization": token
-	},
-	body: JSON.stringify({ title, choices })
-    });
-
-    if (!res.ok)
-	throw new Error((await res.json).error);
+    if (res.ok && hasBody) return json;
+    if (!res.ok) throw new Error(json.error);
 }
