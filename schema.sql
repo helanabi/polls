@@ -4,7 +4,8 @@ CREATE TABLE Users (
        id    	   SERIAL PRIMARY KEY,
        username	   TEXT UNIQUE NOT NULL,
        email	   TEXT UNIQUE NOT NULL,
-       pwd_hash	   TEXT NOT NULL
+       pwd_hash	   TEXT NOT NULL,
+       verified	   BOOL NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE Polls (

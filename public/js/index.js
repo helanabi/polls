@@ -4,6 +4,7 @@ import * as api from "./api.js";
 import home from "./home.js";
 import login from "./login.js";
 import signup from "./signup.js";
+import verify from "./verify.js";
 
 function header(userLoggedIn, setUser) {
     const links = cons("ul", cons("li", link("/", "Home")));
@@ -40,7 +41,7 @@ function app() {
 	api.setToken(user?.token);
 	currentHeader.replaceWith(
 	    currentHeader = header(Boolean(user), setUser));
-	shared.toggleHomeView();
+	shared.toggleHomeView?.();
     }
 
     shared.showNotif = (msg, type) => {
@@ -51,6 +52,7 @@ function app() {
 	  .set(/\/$/, () => home(shared))
 	  .set(/\/login$/, () => login(setUser))
 	  .set(/\/signup$/, signup)
+	  .set(/\/verify(\?|$)/, () => verify(shared))
 	  .set(/\//, notfound);
 
     const container = new DocumentFragment();

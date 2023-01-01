@@ -12,7 +12,7 @@ function authorize(req, next) {
     return new Promise((resolve, reject) => {
 	jwt.verify(token, process.env.JWT_KEY, (err, user) => {
 	    if (err) {
-		next?.(httpError(406, "invalid token"));
+		next?.(err);
 		resolve(false);
 	    } else {
 		req.user = user;

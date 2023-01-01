@@ -73,11 +73,16 @@ exports.saveUser = function(user) {
 	[user.username, user.email, user.pwd_hash]);
 };
 
-exports.user = async function(username) {
+exports.user = async function(info, column="username") {
     const res = await client.query(
-	"SELECT * FROM Users WHERE username = $1",
-	[username]);
+	`SELECT * FROM Users WHERE ${column} = $1`,
+	[info]);
     
     if (res.rows.length)
 	return res.rows[0];
+};
+
+exports.verify = function(userId) {
+    return client.query("UPDATE Users SET verified = TRUE WHERE id = $1",
+			[userId]);
 };

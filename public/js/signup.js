@@ -1,5 +1,4 @@
 import cons from "./spa-utils/cons.js";
-import { link } from "./spa-utils/router.js";
 
 async function saveUser(form) {
     if (form.password.value !== form["password-confirm"].value)
@@ -35,9 +34,8 @@ export default function signup() {
 	    notif.removeAttribute("hidden");
 
 	    notif.replaceChildren(
-		"Account created successfuly. ",
-		"You can now ", link("/login", " login"),
-		" with your new account");
+		"Almost there! We've sent a verification link to your email" +
+		    ", please visit it to confirm your account.");
 	} catch(err) {
 	    console.error(err = err.toString());
 	    notif.removeAttribute("hidden");

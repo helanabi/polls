@@ -4,6 +4,7 @@ dotenv.config({ path: makePath(".env") });
 
 const express = require("express");
 const db = require("./db.js");
+const mailer = require("./mailer.js");
 const polls = require("./polls.js");
 const users = require("./users.js");
 
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
 app.post("/api/auth", users.auth);
 app.post("/api/signup", users.signup);
 app.post("/api/login", users.login);
+app.post("/api/verify", users.verify);
 
 app.get("/api/polls", polls.getAll);
 app.post("/api/polls", polls.post);
@@ -36,6 +38,7 @@ app.use((err, req, res, next) => {
 
 async function main() {
     await db.init();
+    await mailer.init();
 
     app.listen(PORT, () => {
 	console.log(`Server listening on port ${PORT}...`);
