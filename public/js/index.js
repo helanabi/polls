@@ -1,26 +1,36 @@
 import cons from "./spa-utils/cons.js";
 import { link, router } from "./spa-utils/router.js";
 import * as api from "./api.js";
+import dict from "./dict.js";
 import home from "./home.js";
 import login from "./login.js";
 import signup from "./signup.js";
 import verify from "./verify.js";
 
 function header(userLoggedIn, setUser) {
-    const links = cons("ul", cons("li", link("/", "Home")));
+    function handleLang(event) {
+	dict.setLang(event.target.value);
+    }
+    
+    const links = cons("ul", cons("li", link("/", dict.get("home"))));
 
     if (!userLoggedIn) {
 	links.append(
-	    cons("li", link("/signup", "Sign up")),
-	    cons("li", link("/login", "Log in")));
+	    cons("li", link("/signup", dict.get("signup"))),
+	    cons("li", link("/login", dict.get("login"))));
     } else {
 	links.append(
 	    cons("button", { onclick: () => setUser(null) }, "Log out"));
     }
+
+    links.append(
+ 	cons("select", { onchange: handleLang },
+	     cons("option", { value: "en" }, "English"),
+	     cons("option", { value: "ar" }, "العربية")));
     
     return cons("header",
 		cons("h1", "Polls"),
-		cons("span", "Create and vote on polls"),
+		cons("span", dict.get("title")),
 		links);
 }
 
