@@ -1,5 +1,6 @@
-import * as api from "./api.js";
 import cons from "./spa-utils/cons.js";
+import * as api from "./api.js";
+import icon from "./icons.js";
 
 function makePoll(poll, shared) {
     let choice;
@@ -51,7 +52,7 @@ function pollList(shared) {
     const root = cons("section");
 
     shared.refreshList = async () => {
-	root.prepend("loading...");
+	root.prepend(icon("spinner"));
 
 	try {
 	    const polls = await api.request("/api/polls", {

@@ -1,6 +1,7 @@
 import cons from "./spa-utils/cons.js";
 import { link, router } from "./spa-utils/router.js";
 import * as api from "./api.js";
+import icon from "./icons.js";
 import dict from "./dict.js";
 import home from "./home.js";
 import login from "./login.js";
@@ -29,7 +30,7 @@ function header(userLoggedIn, setUser) {
 	     cons("option", { value: "ar" }, "العربية")));
     
     return cons("header",
-		cons("h1", "Polls"),
+		cons("h1", icon("poll"), "Polls"),
 		cons("span", dict.get("title")),
 		links);
 }
