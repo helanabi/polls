@@ -1,6 +1,6 @@
-import Dict from "./spa-utils/dict.js";
+import makeDict from "./spa-utils/dict.js";
 
-const dict = new Dict("en", {
+export const { dict, setLang } =  makeDict("en", {
     home: { en: "Home", ar: "الرئيسية" },
     signup: { en: "Sign up", ar: "التسجيل" },
     login: { en: "Log in", ar: "الدخول" },
@@ -9,5 +9,3 @@ const dict = new Dict("en", {
 	ar: "أنشئ و صوت على استطلاعات الرأي"
     }
 });
-
-export default dict;

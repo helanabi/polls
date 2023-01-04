@@ -2,7 +2,7 @@ import cons from "./spa-utils/cons.js";
 import { link, router } from "./spa-utils/router.js";
 import * as api from "./api.js";
 import icon from "./icons.js";
-import dict from "./dict.js";
+import { dict, setLang } from "./dict.js";
 import home from "./home.js";
 import login from "./login.js";
 import signup from "./signup.js";
@@ -10,15 +10,15 @@ import verify from "./verify.js";
 
 function header(userLoggedIn, setUser) {
     function handleLang(event) {
-	dict.setLang(event.target.value);
+	setLang(event.target.value);
     }
     
-    const links = cons("ul", cons("li", link("/", dict.get("home"))));
+    const links = cons("ul", cons("li", link("/", dict("home"))));
 
     if (!userLoggedIn) {
 	links.append(
-	    cons("li", link("/signup", dict.get("signup"))),
-	    cons("li", link("/login", dict.get("login"))));
+	    cons("li", link("/signup", dict("signup"))),
+	    cons("li", link("/login", dict("login"))));
     } else {
 	links.append(
 	    cons("button", { onclick: () => setUser(null) }, "Log out"));
@@ -31,7 +31,7 @@ function header(userLoggedIn, setUser) {
     
     return cons("header",
 		cons("h1", icon("poll"), "Polls"),
-		cons("span", dict.get("title")),
+		cons("span", dict("title")),
 		links);
 }
 
