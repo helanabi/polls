@@ -1,12 +1,13 @@
-import cons from "./spa-utils/cons.js";
-import { link, router } from "./spa-utils/router.js";
-import * as api from "./api.js";
-import icon from "./icons.js";
-import { dict, setLang } from "./dict.js";
-import home from "./home.js";
-import login from "./login.js";
-import signup from "./signup.js";
-import verify from "./verify.js";
+import cons from "spa-utils/cons";
+import { link, router } from "spa-utils/router";
+import * as api from "./lib/api.js";
+import icon from "./lib/icons.js";
+import { dict, setLang } from "./lib/dict.js";
+import home from "./views/home.js";
+import login from "./views/login.js";
+import signup from "./views/signup.js";
+import verify from "./views/verify.js";
+import "./styles/types.css";
 
 function header(userLoggedIn, setUser) {
     function handleLang(event) {

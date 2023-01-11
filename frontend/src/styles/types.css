@@ -1,0 +1,14 @@
+@font-face {
+    font-family: Sofia-sans;
+    src: url("../fonts/SofiaSans-VariableFont_wght.ttf");
+}
+
+body {
+    font-family: Sofia-sans, Sans-serif;
+}
+
+svg {
+    width: 1em;
+    vertical-align: top;
+}
+ 

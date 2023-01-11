@@ -1,4 +1,4 @@
-import makeDict from "./spa-utils/dict.js";
+import makeDict from "spa-utils/dict";
 
 export const { dict, setLang } =  makeDict("en", {
     home: { en: "Home", ar: "الرئيسية" },

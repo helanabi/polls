@@ -20,7 +20,6 @@
         "http-errors": "^2.0.0",
         "jsonwebtoken": "^9.0.0",
         "nodemailer": "^6.8.0",
-        "pg": "^8.8.0",
-        "spa-utils": "file:../spa_utils"
+        "pg": "^8.8.0"
     }
 }

@@ -1,4 +1,4 @@
-import cons from "./spa-utils/cons.js";
+import cons from "spa-utils/cons";
 
 async function saveUser(form) {
     if (form.password.value !== form["password-confirm"].value)

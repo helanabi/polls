@@ -8,9 +8,9 @@ const mailer = require("./mailer.js");
 const polls = require("./polls.js");
 const users = require("./users.js");
 
-const { PORT } = process.env;
+const { PORT, NODE_ENV } = process.env;
 const app = express();
-
+			   
 app.use(express.json());
 app.use(express.static(makePath("public")));
 
@@ -28,7 +28,7 @@ app.post("/api/polls", polls.post);
 app.post("/api/votes", polls.vote);
 
 app.get("/*", (req, res) => {
-    res.sendFile(makePath("public/index.html"));
+    res.sendFile(makePath("public", "index.html"));
 });
 
 app.use((err, req, res, next) => {

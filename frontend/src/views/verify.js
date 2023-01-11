@@ -1,6 +1,6 @@
-import cons from "./spa-utils/cons.js";
-import { parseSearchParams, navigate } from "./spa-utils/router.js";
-import { request } from "./api.js";
+import cons from "spa-utils/cons";
+import { parseSearchParams, navigate } from "spa-utils/router";
+import { request } from "../lib/api.js";
 
 export default function verify({ showNotif }) {
     const notif = cons("div", { hidden: "" });

@@ -1,6 +1,7 @@
-import cons from "./spa-utils/cons.js";
-import * as api from "./api.js";
-import icon from "./icons.js";
+import cons from "spa-utils/cons";
+import * as api from "../lib/api.js";
+import icon from "../lib/icons.js";
+import "../styles/home.css";
 
 function makePoll(poll, shared) {
     let choice;
