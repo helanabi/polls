@@ -1,10 +1,28 @@
 const path = require("node:path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlPlugin = require("html-webpack-plugin");
+
+const devOptions = {
+    mode: "development",
+    devtool: "inline-source-map",
+    devServer: {
+	hot: false,
+	historyApiFallback: true,
+	proxy: {
+	    "/api": "http://localhost:3000"
+	}
+    }
+};
+
+const prodOptins = {
+    mode: "production"
+};
 
 module.exports = {
+    ...devOptions,
+    
     entry: "./src/index.js",
     plugins: [
-	new HtmlWebpackPlugin({
+	new HtmlPlugin({
 	    title: "Polls"
 	})
     ],
