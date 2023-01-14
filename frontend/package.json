@@ -12,6 +12,6 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
-    "spa-utils": "file:../../spa_utils"
+    "spa-utils": "github:helanabi/spa-utils#semver:^0.1.0"
   }
 }
