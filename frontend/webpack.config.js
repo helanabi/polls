@@ -1,25 +1,9 @@
 const path = require("node:path");
 const HtmlPlugin = require("html-webpack-plugin");
 
-const devOptions = {
-    mode: "development",
-    devtool: "inline-source-map",
-    devServer: {
-	hot: false,
-	historyApiFallback: true,
-	proxy: {
-	    "/api": "http://localhost:3000"
-	}
-    }
-};
+const MODE = "development";
 
-const prodOptins = {
-    mode: "production"
-};
-
-module.exports = {
-    ...devOptions,
-    
+const options = {
     entry: "./src/index.js",
     plugins: [
 	new HtmlPlugin({
@@ -51,3 +35,30 @@ module.exports = {
 	]
     }
 };
+
+if (MODE === "development") {
+    options.mode = "development";
+    options.devtool = "inline-source-map",
+
+    options.devServer = {
+	hot: false,
+	historyApiFallback: true,
+	proxy: {
+	    "/api": "http://localhost:3000"
+	}
+    };
+} else {
+    options.mode = "production";
+
+    options.module.rules.push({
+	test: /\.js$/,
+	use: {
+	    loader: "babel-loader",
+	    options: {
+		presets: ["@babel/preset-env"],
+	    }
+	}
+    });
+}
+
+module.exports = options;
