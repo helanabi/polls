@@ -4,22 +4,22 @@ Full-stack web application where users can create and vote on polls.
 
 ## Motivation ##
 
-This is a proof-of-concept project demonstrating several modern web develpment techniques (listed belowd).
+This is a proof-of-concept project demonstrating several modern web develpment techniques (listed below).
 
-It especially proves the readiness of current Web APIs in making a fairly sophisticated single-page-application with a clean code-base without reliance on third party libraries and frameworks.  The exception to this is usage of SPA-utils (see below), which are developed for this very end (consult (it's documentation for more on that)[https://github.com/helanabi/spa-utils#readme]).
+It especially proves the readiness of current Web APIs in making a fairly sophisticated single-page-application with a clean code-base without reliance on third party libraries and frameworks.  The exception to this is usage of SPA-utils (see below), which is developed for this very end (consult [it's documentation](https://github.com/helanabi/spa-utils#readme) for more on that).
 
 ## Tech Stack ##
 
 * PostgreSQL
 * Node.js / Express
-* (SPA-utils)[https://github.com/helanabi/spa-utils]
+* [SPA-utils](https://github.com/helanabi/spa-utils)
 
 ## Main Features ##
 
 * Modern architecture: Backend API / Frontend SPA
-* Ergonomic development environment based on (Webpack)[https://webpack.js.org/]
+* Ergonomic development environment based on [Webpack](https://webpack.js.org/)
 * Automated build process which offers:
-    * Support for old browsers through (Babel)[https://babeljs.io/]
+    * Support for old browsers through [Babel](https://babeljs.io/)
     * Reduced production bundle size through minification
 * Automated testing
 * Multi-language support
