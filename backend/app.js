@@ -1,3 +1,5 @@
+/* Copyright 2022-2023 Hassan El anabi (al-annabi.tech) */
+
 const dotenv = require("dotenv");
 const { makePath } = require("./utils.js");
 dotenv.config({ path: makePath(".env") });

@@ -1,3 +1,5 @@
+/* Copyright 2022-2023 Hassan El anabi (al-annabi.tech) */
+
 import cons from "spa-utils/cons";
 import { link, router } from "spa-utils/router";
 import * as api from "./lib/api.js";
