@@ -18,7 +18,7 @@ It especially proves the readiness of current Web APIs in making a fairly sophis
 
 * Modern architecture: Backend API / Frontend SPA
 * Ergonomic development environment based on [Webpack](https://webpack.js.org/)
-* Automated build process which offers:
+* Automated build process that offers:
     * Support for old browsers through [Babel](https://babeljs.io/)
     * Reduced production bundle size through minification
 * Automated testing
