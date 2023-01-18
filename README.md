@@ -27,7 +27,7 @@ It especially proves the readiness of current Web APIs in making a fairly sophis
 
 ## Live Demo ##
 
-`Comming soon`
+`TODO`
 
 ## Copyright ##
 
